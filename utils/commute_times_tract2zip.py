@@ -1,6 +1,6 @@
-import numpy as np
 import pandas as pd
-#hey
+
+
 df_comtime = pd.read_csv('data/census/commute_times/ACSDT5Y2019.B08012-Data.csv', skiprows=[1])
 df_cnames = pd.read_csv('data/census/commute_times/column_names.csv')
 df_zip2tract = pd.read_excel('data/census/ZIP_TRACT_032019.xlsx')
