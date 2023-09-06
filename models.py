@@ -219,6 +219,9 @@ def estimate_som_clusters(year=2019, month=None,  day=None, som_x=None, som_y=No
             for series in win_map[cluster]:
                 ax.plot(dates, series,c="gray",alpha=0.5)
             ax.plot(dates, dtw_barycenter_averaging(np.vstack(win_map[cluster])),c="red")
+            ax.xaxis.set_major_formatter(
+                mdates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
+            ax.tick_params(axis='both', which='major', labelsize=20)
             fig.show()
 
 
