@@ -325,3 +325,16 @@ def get_train_test_data(gdf_data, use_cols, train_size=.7):
     y_test = y.iloc[test_ind]
 
     return X_train, y_train, X_test, y_test, X
+
+def generate_landuse_geojson():
+    df_land = gpd.read_file('../data/geo/2018_Land_Use_Inventory_for_Northeastern_Illinois.geojson')
+    land_uses = ['11', '12', '13', '14']
+    df_land = df_land[df_land.LANDUSE.str[:2].isin(land_uses)]
+
+    gdf_zc = gpd.read_file('../data/geo/Chicago_ZC.geojson')
+    gdf_zc['GEOID20'] = gdf_zc['GEOID20'].astype(int)
+    df_land_z = df_land.sjoin(gdf_zc.to_crs(4326))
+    df_land_z['residential'] = np.where(df_land_z.LANDUSE.str[:2] == '11', 1, 0)
+    df_land_z = df_land_z[['OBJECTID', 'GEOID20', 'residential', 'geometry']].rename(
+        columns={'OBJECTID': 'id', 'GEOID20': 'zip5'})
+    df_land_z.to_file('../data/geo/landuse_zc.geojson', driver='GeoJSON')
